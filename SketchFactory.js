@@ -9,24 +9,15 @@ class SketchFactory {
     }
     buildMap() {
         this.sketches = new Map();
-        this.sketches.set('Digit1', rainballDraw);
-        this.sketches.set('Digit2', chainsDraw);
-        this.sketches.set('Digit3', tetrisDraw);
+        this.sketches.set('Digit1', { setup: rainballSetup, renderer: rainballDraw });
+        this.sketches.set('Digit2', { setup: chainsSetup, renderer: chainsDraw });
+        this.sketches.set('Digit3', { setup: tetrisSetup, renderer: tetrisDraw });
     }
     goStrategy(code) {
-        switch (code) {
-            case 'Digit1':
-                rainballSetup();
-                draw = function() { rainballDraw(); };
-                break;
-            case 'Digit2':
-                chainsSetup();
-                draw = function() { chainsDraw(); };
-                break;
-            case 'Digit3':
-                tetrisSetup();
-                draw = function() { tetrisDraw(); };
-                break;
+        if (this.sketches.has(code)) {
+            let { setup, renderer } = this.sketches.get(code);
+            setup();
+            draw = renderer;
         }
     }
 }
